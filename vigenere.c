@@ -48,7 +48,6 @@ int main() {
     scanf("%s", chave);
     
     /*Cifrar*/
-    i = j = 0;
     lin = col = 0;
 
     while (text[lin] != '\0') {
@@ -66,7 +65,6 @@ int main() {
     printf("\nTexto cifrado: %s\n",text); 
 
     /*Descifrar*/
-    i = j = 0;
     lin = col = 0;
 
     while (text[lin] != '\0') {
