@@ -3,14 +3,25 @@
 #include <string.h>
 #define tam 26
 
-//Retorna a posição do caractere no quadrado de vigenere
-int searchCarac(char letra, char vig[tam][tam]) { //deu problema aqui
+//Retorna a LINHA do caractere no quadrado de vigenere
+int searchCarac(char letra, char vig[tam][tam]) { 
     int i;
 
     for (i = 0; i < tam; i++) {
-        if(vig[0][i] == letra) break;
+        if(vig[i][0] == letra) break;
     }
     return i; 
+}
+
+//Retorna a coluna
+int searchColuna(int linha, char vig[tam][tam], char letra) {
+    int i;
+
+    for (i = 0; i < tam; i++) {
+        if (vig[linha][i] ==  letra) break;
+    }
+
+    return i;
 }
 
 int main() {
@@ -53,9 +64,27 @@ int main() {
         }
         lin++;
     }
-    printf("%s\n",text); //Texto cifrado
-    
+    printf("\nTexto cifrado: %s\n",text); 
 
-    
+    /*Descifrar*/
+    i = j = 0;
+    lin = col = 0;
+
+    while (text[lin] != '\0') {
+        if(text[lin] != ' ') {
+            j = searchCarac(chave[col], vig);
+            i = searchColuna(j, vig, text[lin]); //linha, vigenere, letra
+            
+
+            text[lin] = vig[0][i];
+
+            col++;
+            if (col >= strlen(chave)) col = 0;   
+        }
+        lin++;
+    }
+
+    printf("Texto descifrado: %s\n",text); 
+
     return 0;
 }
