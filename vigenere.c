@@ -47,7 +47,6 @@ int main() {
     printf("Chave: ");
     scanf("%s", chave);
     
-
     /*Cifrar*/
     i = j = 0;
     lin = col = 0;
@@ -74,7 +73,6 @@ int main() {
         if(text[lin] != ' ') {
             j = searchCarac(chave[col], vig);
             i = searchColuna(j, vig, text[lin]); //linha, vigenere, letra
-            
 
             text[lin] = vig[0][i];
 
