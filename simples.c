@@ -44,10 +44,17 @@ int main() {
             text[i] = chave[pos];
         }
     }
-    printf("%s\n", text);
+    printf("Texto cifrado: %s\n", text);
 
+    /*Descifrando*/
+    for (i = 0; i < strlen(text); i++) {
+        if(text[i] != ' ') {
+            int pos = searchLetra(chave, text[i]);
+            text[i] = alf[pos];
+        }
+    }
 
-    
+    printf("Texto descifrado: %s\n", text);
 
     return 0;
 }
