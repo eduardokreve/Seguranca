@@ -252,7 +252,7 @@ int main() {
             
             printf("Encriptando:\n");
             Encrypt(a,rk);
-            printf("Tamanho do bloco %d tamanho da chave %d\n",32*BC,32*KC);
+            printf("amanho do bloco %d tamanho da chave %d\n",32*BC,32*KC);
             for(j = 0; j < BC; j++)
                 for(i = 0; i < 4; i++) printf("%02X",a[i][j]);
             printf("\n");
