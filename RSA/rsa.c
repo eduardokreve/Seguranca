@@ -13,7 +13,6 @@ void clear() { //https://stackoverflow.com/questions/2347770/how-do-you-clear-th
     #endif
 }
 
-
 int primo(int X) {
 	int i, cont = 0;
 
@@ -33,10 +32,11 @@ int primo(int X) {
     return X;
 }
 
-int calcE(int n) {
+/*int calcE(int n) {
     int i
 
 }
+*/
 int main() {
     int n = 0, p = 0, q = 0, totiente, e;
 
@@ -54,8 +54,6 @@ int main() {
     //calcula chave publica
     totiente = (p-1)*(q-1);
     calcE(totiente);
-
-
 
     return 0;
 }
