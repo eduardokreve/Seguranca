@@ -1,10 +1,12 @@
+/*Para compilar: gcc rsa.c -o r -lm && ./r   */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include "funcoes.h"
 #define MAX 50
-#define e 3
+#define e 5
  
 
 void clear() { //https://stackoverflow.com/questions/2347770/how-do-you-clear-the-console-screen-in-c
@@ -35,29 +37,33 @@ int primo(int X) {
 }
 
 int chavePriv(int tot) {
-
 	return ((2 * tot+1) / e);
 }
 
-long long int cifrar(char text[], int tot, int n) {
-	int i, valor[MAX], t = strlen(text);;
-	long long int c = 1, transf = 1;
+void cifrar(int cifra[], char text[], int n) { 
+	int i, t = strlen(text);
+	long long int elevado = 0;
 
 	//converter a entrada para decimal
+	for (i = 0; i < t; i++) cifra[i] = (int)(text[i]);
+	
+	/*Faz a criptografia para cada valor do vetor*/
 	for (i = 0; i < t; i++) {
-		valor[i] = (int)(text[i]);
-		printf("%d ", valor[i]);
+		elevado = (pow(cifra[i], e));
+		cifra[i] = elevado % n;
+	}
+}
+
+void imprime(int cifra[], int tam) {
+	for (int i = 0; i < tam; i++) {
+		printf("%d ", cifra[i]);
 	}
 	printf("\n");
-	
-	/*Faz a criptografia para cada valor do vetor não o todo*/
-
-	return c;
 }
 
 int main() {
 	int n = 0, p = 0, q = 0, totiente, priv;
-	long long int valorCifr;
+	int cifra[MAX];
 	char text[MAX];
 
 	printf("Digite a frase a ser cifrada: ");
@@ -79,7 +85,10 @@ int main() {
 	printf("chaves publicas: %d e %d\n", n, e);
 	printf("Chave privada: %d\n", priv);
 
-	valorCifr = cifrar(text, totiente, n);
+	//cifra o texto
+	cifrar(cifra, text, n);
+	printf("Texto Cifrado:\n");
+	imprime(cifra, strlen(text));
 
 	return 0;
 }
