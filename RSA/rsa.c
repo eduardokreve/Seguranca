@@ -50,16 +50,8 @@ long long int cifrar(char text[], int tot, int n) {
 	}
 	printf("\n");
 	
-	//converter de vetor para um unico inteiro
-	for (i = 0; i < t; i++) {
-		c *= pow(10,ceil(log10(valor[i]+1)));
+	/*Faz a criptografia para cada valor do vetor não o todo*/
 
-		if(c == 100) c -= 100; //ajuste
-		else {
-			c += valor[i];
-		}
-		printf("-->%lld\n", c); 
-	}
 	return c;
 }
 
