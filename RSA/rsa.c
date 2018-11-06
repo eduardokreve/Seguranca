@@ -3,7 +3,9 @@
 #include <string.h>
 #include <math.h>
 #include "funcoes.h"
-#define e 5 
+#define MAX 50
+#define e 3
+ 
 
 void clear() { //https://stackoverflow.com/questions/2347770/how-do-you-clear-the-console-screen-in-c
 	#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
@@ -37,28 +39,31 @@ int chavePriv(int tot) {
 	return ((2 * tot+1) / e);
 }
 
-int cifrar(int tot, int n) {
-	char text[50];
-	int c, i, valor[50];
- 
-	printf("Digite a frase: ");
-	scanf("%[^\n]s", text);
+long long int cifrar(char text[], int tot, int n) {
+	int i, valor[MAX];
+	long long int c;
 
-/*	for (i = 0; i < strlen(text); i++) {
-		valor[i] = (int)(text[i]-'0');
-		printf("%d ", valor[i]);
+	//converter a entrada para decimal
+	for (i = 0; i < strlen(text); i++) valor[i] = (int)(text[i]);
+
+	//transforma o vetor em um unico inteiro
+	for (i = 0; i < strlen(text); i++) {
+		printf("%d\n", valor[i]);
+		
 	}
-
-*/	
 	
+	printf("%lld\n", c);
 
 	return 0;
 }
 
 int main() {
-	int n = 0, p = 0, q = 0;
-	int totiente, priv, valorCifr;
-	char text[50];
+	int n = 0, p = 0, q = 0, totiente, priv;
+	long long int valorCifr;
+	char text[MAX];
+
+	printf("Digite a frase a ser cifrada: ");
+	scanf("%[^\n]s", text);
 
 	printf("p: ");
 	scanf("%d", &p);
@@ -76,7 +81,7 @@ int main() {
 	printf("chaves publicas: %d e %d\n", n, e);
 	printf("Chave privada: %d\n", priv);
 
-	valorCifr = cifrar(totiente, n);
+	valorCifr = cifrar(text, totiente, n);
 
 	return 0;
 }

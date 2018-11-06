@@ -3,4 +3,4 @@ int primo(int X);
 void clear();
 int calcE(int n);
 int chavePriv(int tot);
-int cifrar(int tot, int n);
+long long int cifrar(char text[], int tot, int n);
