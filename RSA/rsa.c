@@ -4,11 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "funcoes.h"
 #define MAX 50
-#define e 5
  
-
 void clear() { //https://stackoverflow.com/questions/2347770/how-do-you-clear-the-console-screen-in-c
 	#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		system("clear");
@@ -36,59 +33,123 @@ int primo(int X) {
 	return X;
 }
 
-int chavePriv(int tot) {
+long long int chavePriv(int tot, int e) {
 	return ((2 * tot+1) / e);
 }
 
-void cifrar(int cifra[], char text[], int n) { 
-	int i, t = strlen(text);
+void cifrar(long long int cifra[], char text[], long long n, long long e) { 
+	int i, tam = strlen(text);
 	long long int elevado = 0;
 
 	//converter a entrada para decimal
-	for (i = 0; i < t; i++) cifra[i] = (int)(text[i]);
-	
+	for (i = 0; i < tam; i++) {
+		cifra[i] = (int)(text[i]);
+	}
+
 	/*Faz a criptografia para cada valor do vetor*/
-	for (i = 0; i < t; i++) {
+	for (i = 0; i < tam; i++) {
 		elevado = (pow(cifra[i], e));
 		cifra[i] = elevado % n;
 	}
 }
 
-void imprime(int cifra[], int tam) {
+int verificaPrimo(int p){
+	int i;
+	double j;
+	
+	//Calcula a raiz quadrada para p
+	j = sqrt(p);
+
+	for(i = 2; i <= j; i++){
+		//Retorna 0 caso não seja um número primo
+		if(p%i == 0)
+			return 0;
+	}
+
+	//Retorna 1 quando é um número primo
+	return 1;
+}
+
+int escolheE(int tot, int p, int q, int n) {
+	int e = 0, i;
+
+	for(i = 2; i < tot; i++){
+
+		if(tot%i != 0 && verificaPrimo(i) && i != p && i != q){
+			e = i;
+			break;
+		}
+	}
+	return e;
+}
+
+void imprime(long long int cifra[], int tam) {
 	for (int i = 0; i < tam; i++) {
-		printf("%d ", cifra[i]);
+		printf("%lld ", cifra[i]);
 	}
 	printf("\n");
 }
 
+void descifrar(long long int cifra[], long long int priv, long long int n, int tam) {
+	int i;
+	long long int elevado = 0;
+
+	for (i = 0; i < tam; i++) {
+		elevado = (pow(cifra[i], priv));
+		cifra[i] = elevado % n;
+	}
+}	
+
+void converteChar(long long int cifra[], char text[]) {
+	int i, tam = strlen(text);
+	
+	for (i = 0; i < tam; i++) {
+		text[i] = (char)(cifra[i]);
+	}
+	printf("Texto legivel: ");
+	printf("%s\n", text);
+}
+
+
 int main() {
-	int n = 0, p = 0, q = 0, totiente, priv;
-	int cifra[MAX];
+	long long int n = 0, p = 0, q = 0, totiente, priv, tamText, e;
+	long long int cifra[MAX];
 	char text[MAX];
 
 	printf("Digite a frase a ser cifrada: ");
 	scanf("%[^\n]s", text);
 
+	tamText = strlen(text);
+
 	printf("p: ");
-	scanf("%d", &p);
+	scanf("%lld", &p);
 	p = primo(p);
 
 	printf("q: ");
-	scanf("%d", &q);
+	scanf("%lld", &q);
 	q = primo(q);
 
 	/*Calcula os valores necessarios para cifrar*/
-	n = p * q; //calcula n
-	totiente = (p-1)*(q-1); //calcula o totiente
-	priv = chavePriv(totiente); //define a chave privada
 
-	printf("chaves publicas: %d e %d\n", n, e);
-	printf("Chave privada: %d\n", priv);
+	n = p * q; //uma das chaves publicas
+	totiente = (p - 1)*(q - 1); //calcula o totiente
+	e = escolheE(totiente, p, q, n);
+	priv = chavePriv(totiente, e); //define a chave privada
+
+	printf("chaves publicas: %lld e %lld\n", n, e);
+	printf("Chave privada: %lld\n\n", priv);
 
 	//cifra o texto
-	cifrar(cifra, text, n);
-	printf("Texto Cifrado:\n");
-	imprime(cifra, strlen(text));
+	cifrar(cifra, text, n, e);
+	printf("Texto Cifrado:");
+	imprime(cifra, tamText);
+
+	//descifra o texto
+	printf("Texto Descifrado:");
+	descifrar(cifra, priv, n, tamText);
+	
+	imprime(cifra, tamText);
+	converteChar(cifra, text);
 
 	return 0;
 }
