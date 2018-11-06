@@ -40,21 +40,27 @@ int chavePriv(int tot) {
 }
 
 long long int cifrar(char text[], int tot, int n) {
-	int i, valor[MAX];
-	long long int c;
+	int i, valor[MAX], t = strlen(text);;
+	long long int c = 1, transf = 1;
 
 	//converter a entrada para decimal
-	for (i = 0; i < strlen(text); i++) valor[i] = (int)(text[i]);
-
-	//transforma o vetor em um unico inteiro
-	for (i = 0; i < strlen(text); i++) {
-		printf("%d\n", valor[i]);
-		
+	for (i = 0; i < t; i++) {
+		valor[i] = (int)(text[i]);
+		printf("%d ", valor[i]);
 	}
+	printf("\n");
 	
-	printf("%lld\n", c);
+	//converter de vetor para um unico inteiro
+	for (i = 0; i < t; i++) {
+		c *= pow(10,ceil(log10(valor[i]+1)));
 
-	return 0;
+		if(c == 100) c -= 100; //ajuste
+		else {
+			c += valor[i];
+		}
+		printf("-->%lld\n", c); 
+	}
+	return c;
 }
 
 int main() {
