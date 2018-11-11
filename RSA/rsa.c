@@ -38,12 +38,18 @@ long long int chavePriv(int tot, int e) {
 }
 
 void cifrar(long long int cifra[], char text[], long long n, long long e) { 
-	int i, tam = strlen(text);
+	int i, j, tam = strlen(text);
 	long long int elevado = 0;
+	char alf[26] = {'A','B','C','D','E','F','G','H','I','J','K','L',
+                    'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
-	//converter a entrada para decimal
+	//PEGA A ENTRADA E TRANSFORMA SEGUINDO A ORDEM DOS NUMEROS DO ALF.ABETO
 	for (i = 0; i < tam; i++) {
-		cifra[i] = (int)(text[i]);
+		for(j = 0; j < 26; j++) {
+			if(text[i] == alf[j]) {
+				cifra[i] = j;
+			}
+		}
 	}
 
 	/*Faz a criptografia para cada valor do vetor*/
@@ -102,12 +108,13 @@ void descifrar(long long int cifra[], long long int priv, long long int n, int t
 
 void converteChar(long long int cifra[], char text[]) {
 	int i, tam = strlen(text);
+	char alf[26] = {'A','B','C','D','E','F','G','H','I','J','K','L',
+                    'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 	
 	for (i = 0; i < tam; i++) {
-		text[i] = (char)(cifra[i]);
+		text[i] = alf[cifra[i]];
 	}
-	printf("Texto legivel: ");
-	printf("%s\n", text);
+	printf("\nTexto legivel: %s\n", text);
 }
 
 
@@ -116,7 +123,7 @@ int main() {
 	long long int cifra[MAX];
 	char text[MAX];
 
-	printf("Digite a frase a ser cifrada: ");
+	printf("Entre somente com letras maiusculas\nDigite a frase a ser cifrada: ");
 	scanf("%[^\n]s", text);
 
 	tamText = strlen(text);
@@ -150,6 +157,6 @@ int main() {
 	
 	imprime(cifra, tamText);
 	converteChar(cifra, text);
-
+	
 	return 0;
 }
