@@ -29,7 +29,7 @@ int main() {
     
     printf("Mensagem a ser Cifrada\n(apenas letras maiusculas)\n-->");
     scanf("%[^\n]s", text);
-    printf("Chave: ");
+    printf("Chave (letras nao repetidas): ");
     scanf("%s", chave);
 
     /*Faz o tratamento para criar a tabela de transposição*/
