@@ -37,7 +37,7 @@ int main () {
 	strcpy(copia, text); //usado para comparar se foi descifrado
 
 	cifrar(text, chave);
-
+	
 	strcpy(cifrado, text); //texto cifrado originalmente
 
 	chave = 0; //reseta a chave 
