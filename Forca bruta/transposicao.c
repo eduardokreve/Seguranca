@@ -4,7 +4,7 @@
 #include <time.h>
 #define tam 26
 
-void tiraEspaco(char text[50]) {
+void tiraEspaco (char text[50]) {
 	int j = 0;
 
 	for (int i = 0; i <= strlen(text); i++) {
@@ -13,14 +13,25 @@ void tiraEspaco(char text[50]) {
 }
 
 //calcula quantas linhas são necessárias para a tabela de transposição
-int calcLinhas(float tamText, float tamChav) {
+int calcLinhas (float tamText, float tamChav) {
 	float valor = tamText/tamChav;
 	
 	if (valor == (int)valor) return valor;
 	else return valor+1; 
 }
 
-void descifrar (char alf[], char text[], char chave[], char copyChave[], char TRANSP[][tam], int linhas, int colunaText) {
+int comparaString (char text[], char original[], int n) {
+	int i;
+
+	for (i = 0; i < n; i++) {
+		if(text[i] != original[i]) return 0;
+
+	}
+
+	return 1;
+} 
+
+void descifrar (char alf[], char text[], char chave[], char TRANSP[][tam], int linhas, int colunaText) {
 	int i, j, k, cont = 0;
 	char menorLetra = ']';
 	/*Descifrar*/
@@ -57,9 +68,11 @@ void descifrar (char alf[], char text[], char chave[], char copyChave[], char TR
 	printf("\nTexto Descifrado:\n%s\n", text);
 }
 
-void cifrar (char alf[], char text[], char chave[], char copyChave[]) {
-	int i, j, linhas, cont = 0, colunaText = 0;
-	char menorLetra = ']';
+void cifrar (char alf[], char text[], char chave[]) {
+	int i, j, linhas, cont = 0, colunaText = 0, posicaoChave = 0, posicaoAlf = 0;
+	char menorLetra = ']', copyChave[tam], original[50];
+
+	srand(time(NULL)); //para não repetir as letras
 
 	/*Faz o tratamento para criar a tabela de transposição*/
 	tiraEspaco(text);
@@ -86,6 +99,8 @@ void cifrar (char alf[], char text[], char chave[], char copyChave[]) {
 	}
 
 	strcpy(copyChave, chave); //faz uma copia da chave de cifra
+	strcpy(original, text); //para comparar na hora de achar a chave
+	
 
 	/*Cifrar*/
 	//tira da tabela e coloca na string cifrando
@@ -107,14 +122,33 @@ void cifrar (char alf[], char text[], char chave[], char copyChave[]) {
 	
 	printf("\nTexto Cifrado:\n%s\n", text);
 
-	descifrar(alf, text, chave, copyChave, TRANSP,linhas, colunaText);
+	//vai tentar achar a chave
+	char keyTent[tam], mensagCifrada[tam];
+	keyTent[posicaoChave] = alf[posicaoAlf]; //valor inicial
+
+	strcpy(mensagCifrada,text); //mensagem cifrada originalmente
+
+	while (1) { 
+		descifrar(alf, text, keyTent, TRANSP, linhas, colunaText);
+
+		if (comparaString(text, original, strlen(original)) == 1) { //achou a chave
+			printf("Chave: %s --> Texto: %s\n", keyTent, text);
+		}
+		else {
+			strcpy(text, mensagCifrada); //retorna a mensagem cifrada originalmente
+			
+
+			if(keyTent[posicaoChave] == 'Z') {
+				//pensar como vai mudar a sequencia de chaves possiveis
+			}
+		}
+	}
 }
 
 int main() {
-	char chave[tam], copyChave[tam], text[50];
+	char chave[tam], text[50];
 	char alf[tam] = {'A','B','C','D','E','F','G','H','I','J','K','L',
 					'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-	srand(time(NULL)); //para não repetir as letras
 	
 	printf("Mensagem a ser Cifrada\n(apenas letras maiusculas)\n-->");
 	scanf("%[^\n]s", text);
@@ -122,6 +156,6 @@ int main() {
 	scanf("%s", chave);
 
 	
-	cifrar(alf, text, chave, copyChave);
+	cifrar(alf, text, chave);
 	return 0;
 }
